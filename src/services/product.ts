@@ -3,6 +3,8 @@ import { getProductRepository } from 'src/libs/typeorm/repositories';
 import { IProductPayload } from './types';
 import { randomUUID } from 'crypto';
 import { Products } from 'src/domain/product';
+import { StandardError } from 'src/domain/standard-error';
+import { ErrorCodes } from 'src/domain/errors';
 
 export class ProductService {
     readonly productRepository: Repository<Products>;
@@ -28,6 +30,22 @@ export class ProductService {
     }
 
     async createProduct(userId: string, payload: IProductPayload): Promise<any> {
+        if (!payload.price) {
+            throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'price required');
+        }
+        
+        if (payload.price < 0) {
+            throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'price should be more or equal to zero');
+        }
+
+        if (!payload.title) {
+            throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'title required');
+        }
+
+        if (!payload.description) {
+            throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'description required');
+        }
+
         const productObject: Products = {
             id: randomUUID(),
             title: payload.title,

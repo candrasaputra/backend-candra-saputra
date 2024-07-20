@@ -11,6 +11,8 @@ import { Transactions } from 'src/domain/transaction';
 import { Users } from 'src/domain/user';
 import { Products } from 'src/domain/product';
 import { TransactionProducts } from 'src/domain/transaction_product';
+import { StandardError } from 'src/domain/standard-error';
+import { ErrorCodes } from 'src/domain/errors';
 
 export class TransactionService {
     readonly userRepository: Repository<Users>;
@@ -77,6 +79,15 @@ export class TransactionService {
         let total = 0;
         for (let i = 0; i < payloads.length; i++) {
             const { product_id: productId, qty } = payloads[i];
+
+            if (!productId) {
+                throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'productId required');
+            }
+
+            if (!qty || qty <= 0) {
+                throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'qty required');
+            }
+
             const product = getProducts.find((p) => p.id === productId);
 
             const transactionProductObj: TransactionProducts = {
