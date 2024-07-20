@@ -32,15 +32,6 @@ export class TransactionService {
     }
 
     async getTransactions(): Promise<any> {
-        // const getTransactions = await this.transactionRepository
-        //                             .createQueryBuilder('transactions')
-        //                             .leftJoinAndSelect('transactions.user', 'users')
-        //                             .select([
-        //                                 'transactions',
-        //                                 'users.id'
-        //                             ])
-        //                             .getMany();
-
         const getTransactions = await this.transactionRepository.find({
             relations: ['user', 'items', 'items.product'],
             select: {
@@ -61,7 +52,9 @@ export class TransactionService {
             }
         });
 
-        return getTransactions;
+        return {
+            data: getTransactions
+        };
     }
 
     async checkout(username: string, payloads: ICheckoutPayload[]): Promise<any> {
@@ -102,7 +95,7 @@ export class TransactionService {
         const discount = total > 50000 ? (10 / 100) * total : 0;
         const transactionObject: Transactions = {
             id: transactionId,
-            address: '',
+            address: getUser?.address,
             status: 'PENDING',
             shippingFee: shippingFee,
             discount: discount,
@@ -121,7 +114,8 @@ export class TransactionService {
         await this.transactionProductRepository.insert(transactionProduct);
 
         return {
-            message: 'product created'
+            message: 'transaction created',
+            data: [transactionObject]
         };
     }
 }

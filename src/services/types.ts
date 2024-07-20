@@ -5,8 +5,8 @@ export interface ServiceError<T> extends Error {
 }
 
 export enum ERole {
-    MERCHANT,
-    CUSTOMER
+    MERCHANT = "MERCHANT",
+    CUSTOMER = "CUSTOMER"
 }
 
 export interface IProductPayload {

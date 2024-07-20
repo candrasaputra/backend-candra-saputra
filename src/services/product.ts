@@ -22,7 +22,9 @@ export class ProductService {
             select: ['id', 'title', 'description', 'price']
         });
 
-        return getProduct;
+        return {
+            data: getProduct
+        };
     }
 
     async createProduct(userId: string, payload: IProductPayload): Promise<any> {
@@ -43,7 +45,8 @@ export class ProductService {
             .execute();
 
         return {
-            message: 'product created'
+            message: 'product created',
+            data: [productObject]
         };
     }
 
@@ -58,7 +61,10 @@ export class ProductService {
         );
 
         return {
-            message: 'product deleted'
+            message: 'product deleted',
+            data: [{
+                id
+            }]
         };
     }
 }
