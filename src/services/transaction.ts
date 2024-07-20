@@ -86,7 +86,6 @@ export class TransactionService {
             const { product_id: productId, qty } = payloads[i];
             const product = getProducts.find((p) => p.id === productId);
 
-            const subtotal = qty * Number(product?.price);
             const transactionProductObj: TransactionProducts = {
                 id: randomUUID(),
                 qty: qty,
@@ -95,7 +94,7 @@ export class TransactionService {
                 product: productId
             };
 
-            total += subtotal;
+            total += qty * Number(product?.price);
             transactionProduct.push(transactionProductObj);
         }
 
@@ -107,7 +106,6 @@ export class TransactionService {
             status: 'PENDING',
             shippingFee: shippingFee,
             discount: discount,
-            subtotal: total,
             totalPayable: shippingFee + total - discount,
             user: getUser?.id
         };

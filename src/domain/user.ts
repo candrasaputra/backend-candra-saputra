@@ -1,7 +1,8 @@
 import { ERole } from 'src/services/types';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
 
 @Entity({ name: 'users' })
+@Index(["username"], { unique: true })
 export class Users {
     @PrimaryColumn({ name: 'id', type: 'uuid' })
     id = '';

@@ -1,6 +1,26 @@
 version: '3.8'
 
 services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: 'backend'
+    ports:
+      - 8081:8081
+    environment:
+      - NODE_ENV=development
+      - PGDATABASE=test
+      - PGHOST=postgres-test
+      - PGPORT=5432
+      - PGUSER=test
+      - PGPASSWORD=test
+      - PORT=8081
+    depends_on:
+      - postgres-test
+    networks:
+      - backend-network
+
   postgres-test:
     image: 'postgres:10.7'
     environment:
@@ -9,3 +29,8 @@ services:
       - POSTGRES_DB=test
     ports:
       - 54320:5432
+    networks:
+      - backend-network
+
+networks:
+  backend-network:

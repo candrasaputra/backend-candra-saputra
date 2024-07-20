@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { Users } from './user';
 
 @Entity({ name: 'products' })
+@Index(["deletedAt"], { unique: false })
 export class Products {
     @PrimaryColumn({ name: 'id', type: 'uuid' })
     id = '';
