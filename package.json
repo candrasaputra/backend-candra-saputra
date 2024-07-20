@@ -79,7 +79,8 @@
         "migration:generate": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --dataSource src/libs/typeorm/ormconfig-cli.ts migration:generate",
         "migration:revert": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js -d src/libs/typeorm/ormconfig-cli.ts migration:revert",
         "format": "prettier --config .prettierrc.js --write \"./**/*.{js,ts,json,yml,yaml}\"",
-        "format:check": "prettier --config .prettierrc.js --check \"./**/*.{js,ts,json,yml,yaml}\""
+        "format:check": "prettier --config .prettierrc.js --check \"./**/*.{js,ts,json,yml,yaml}\"",
+        "seed": "ts-node -r dotenv/config -r ./src/module-alias.ts src/scripts/seed.ts"
     },
     "husky": {
         "hooks": {
