@@ -20,13 +20,16 @@
 
 ## How to run test
 
-## Endpoint list
+## Hak akses
+| #                          | MERCHANT | CUSTOMER |
+|----------------------------|----------|----------|
+| GET /api/v1/products       | x        | x        |
+| POST /api/v1/products      | x        |          |
+| DELETE /api/v1/products    | x        |          |
+| GET /api/v1/transactions   | x        |          |
+| POST /api/v1/transactions  | x        | x        |
 
 ## Assumtions
-- 1 user hanya memiliki 1 toko
-- Memiliki banyak Merchants
-- Memiliki banyak customers
 - Hanya user yang sudah login yang bisa membeli produk
-- Belum mensuport auth
+- Auth endpoint hanya digunakan untuk mengenrate token
 - Tidak mendukung payment flow
-- Tidak menangani User management (dapat di tambahkan kedepannya)
