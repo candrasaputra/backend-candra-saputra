@@ -24,7 +24,6 @@ Ada beberapa cara untuk menjalankan backend ini di local
 2. Jalankan ```npm install```
 3. Ubah nama .env-example menjadi .env
 4. Jalankan `docker compose up -d --build`
-5. Jalankan `npm run migration:run`
 5. Done endpoint `http://localhost:8081`
 
 ### Cara 2: Npm run start:dev
@@ -32,16 +31,18 @@ Ada beberapa cara untuk menjalankan backend ini di local
 2. Ubah nama .env-example menjadi .env
 3. Sesuaikan .env dengan cridentials DB kamu
 4. npm install
+6. Jalankan `npm run migration:run`
 5. npm run start:dev
 
-### Cara 2: VSCode debugger
+### Cara 3: VSCode debugger
 1. Jalankan ```npm install```
 2. Ubah nama .env-example menjadi .env
 3. Sesuaikan .env dengan cridentials DB kamu
 4. npm install
-5. Buka tab run and debug di vscode
-6. Pilih debug server
-7. Klik Run
+5. Jalankan `npm run migration:run`
+6. Buka tab run and debug di vscode
+7. Pilih debug server
+8. Klik Run
 
 ### Seeding data
 Pastikan sudah menjalankan langkah - langkah How to run locally

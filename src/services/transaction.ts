@@ -1,4 +1,4 @@
-import { DataSource, Repository, In } from 'typeorm';
+import { DataSource, Repository, In, IsNull } from 'typeorm';
 import {
     getProductRepository,
     getTransactionProductRepository,
@@ -13,6 +13,7 @@ import { Products } from 'src/domain/product';
 import { TransactionProducts } from 'src/domain/transaction_product';
 import { StandardError } from 'src/domain/standard-error';
 import { ErrorCodes } from 'src/domain/errors';
+import { areAllProductIdsValid } from 'src/libs/uuid';
 
 export class TransactionService {
     readonly userRepository: Repository<Users>;
@@ -60,6 +61,10 @@ export class TransactionService {
     }
 
     async checkout(username: string, payloads: ICheckoutPayload[]): Promise<any> {
+        if(!areAllProductIdsValid(payloads)) {
+            throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'invalid uui');
+        }
+
         const [getUser, getProducts] = await Promise.all([
             this.userRepository.findOne({
                 where: {
@@ -69,7 +74,8 @@ export class TransactionService {
 
             this.productRepository.find({
                 where: {
-                    id: In(payloads.map((payload) => payload.product_id))
+                    id: In(payloads.map((payload) => payload.product_id)),
+                    deletedAt: IsNull()
                 }
             })
         ]);
@@ -88,7 +94,11 @@ export class TransactionService {
                 throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, 'qty required');
             }
 
-            const product = getProducts.find((p) => p.id === productId);
+            const product: any = getProducts.find((p) => p.id === productId);
+
+            if (!product) {
+                throw new StandardError(ErrorCodes.API_VALIDATION_ERROR, `${productId} product id not found`);
+            }
 
             const transactionProductObj: TransactionProducts = {
                 id: randomUUID(),
